@@ -3,7 +3,7 @@
 
 [[projects]]
   branch = "master"
-  digest = "1:91a3e52d0cc8a95ce9b2ad655a241c716ea970d9488207eec86ac409c830e872"
+  digest = "1:7e177faef601df529fb7c710d1090182829393d9ad94a8a6c6a8eb35120177ff"
   name = "github.com/graph-gophers/graphql-go"
   packages = [
     ".",
@@ -18,7 +18,6 @@
     "internal/validation",
     "introspection",
     "log",
-    "relay",
     "trace",
   ]
   pruneopts = "UT"
@@ -37,19 +36,28 @@
   version = "v1.0.2"
 
 [[projects]]
+  digest = "1:40e195917a951a8bf867cd05de2a46aaf1806c50cf92eebf4c16f78cd196f747"
+  name = "github.com/pkg/errors"
+  packages = ["."]
+  pruneopts = "UT"
+  revision = "645ef00459ed84a119197bfb8d8205042c6df63d"
+  version = "v0.8.0"
+
+[[projects]]
   branch = "master"
   digest = "1:76ee51c3f468493aff39dbacc401e8831fbb765104cbf613b89bef01cf4bad70"
   name = "golang.org/x/net"
   packages = ["context"]
   pruneopts = "UT"
-  revision = "146acd28ed5894421fb5aac80ca93bc1b1f46f87"
+  revision = "49bb7cea24b1df9410e1712aa6433dae904ff66a"
 
 [solve-meta]
   analyzer-name = "dep"
   analyzer-version = 1
   input-imports = [
     "github.com/graph-gophers/graphql-go",
-    "github.com/graph-gophers/graphql-go/relay",
+    "github.com/graph-gophers/graphql-go/errors",
+    "github.com/pkg/errors",
   ]
   solver-name = "gps-cdcl"
   solver-version = 1
