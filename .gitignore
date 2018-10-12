@@ -6,6 +6,10 @@
 .idea_modules/
 atlassian-ide-plugin.xml
 
+### Generated code
+schema/bindata.go
+graphql-service
+
 ### MacOS
 .DS_Store
 

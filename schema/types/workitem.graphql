@@ -1,0 +1,8 @@
+# A work item tracker
+type WorkItem {
+  # A unique identifier.
+  id: ID!
+  # Name
+  name: String!
+  description: String!
+}

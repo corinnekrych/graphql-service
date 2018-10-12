@@ -29,6 +29,10 @@
   branch = "master"
   name = "github.com/graph-gophers/graphql-go"
 
+[[constraint]]
+  name = "github.com/pkg/errors"
+  version = "0.8.0"
+
 [prune]
   go-tests = true
   unused-packages = true
