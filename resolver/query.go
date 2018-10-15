@@ -2,16 +2,22 @@ package resolver
 
 import (
 	"context"
-	"github.com/corinnekrych/graphql-service/witapi"
+	"encoding/json"
+	"fmt"
+	"github.com/corinnekrych/graphql-service/witapi/client"
 	"github.com/pkg/errors"
 )
 
-// The QueryResolver is the entry point for all top-level read operations.
-type QueryResolver struct {
-	client *witapi.Client
+type WorkItemsData struct {
+	Data []client.WorkItem `json:"data"`
 }
 
-func NewRoot(client *witapi.Client) (*QueryResolver, error) {
+// The QueryResolver is the entry point for all top-level read operations.
+type QueryResolver struct {
+	client *client.Client
+}
+
+func NewRoot(client *client.Client) (*QueryResolver, error) {
 	if client == nil {
 		return nil, errors.New("cannot resolve witapi.Client")
 	}
@@ -19,30 +25,26 @@ func NewRoot(client *witapi.Client) (*QueryResolver, error) {
 	return &QueryResolver{client: client}, nil
 }
 
-func (r QueryResolver) WorkItems(ctx context.Context) (*[]*WorkItemResolver, error) {
-	// TODO use DataLoader
-	wit, err := r.client.WorkItems(ctx, nil)
-	if err != nil {
-		return nil, errors.Wrap(err, "cannot resolve work items for QueryResolver")
-	}
-	resolver, err := NewWorkItemsResolver(ctx, wit)
-	if err != nil {
-		return nil, errors.Wrap(err, "cannot create WorkItemsResolver")
-	}
-	return resolver, nil
-}
-
 type FilterQueryArgs struct {
 	SpaceId string
 }
 
-func (r QueryResolver) Filter(ctx context.Context, args FilterQueryArgs) (*[]*WorkItemResolver, error) {
+func (r QueryResolver) WorkItems(ctx context.Context, args FilterQueryArgs) (*[]*WorkItemResolver, error) {
 	// TODO use DataLoader
-	wit, err := r.client.WorkItems(ctx, &args.SpaceId)
+	//wit, err := r.client.WorkItems(ctx, &args.SpaceId)
+	path := fmt.Sprintf("/api/spaces/%s/workitems", args.SpaceId)
+	witJSON, err := r.client.ListWorkitems(ctx, path, nil, nil, nil, nil, nil, nil, nil, nil, nil, nil, nil, nil, nil)
 	if err != nil {
-		return nil, errors.Wrap(err, "cannot resolve filter for QueryResolver")
+		return nil, errors.Wrap(err, "cannot resolve workItems for QueryResolver")
 	}
-	resolver, err := NewWorkItemsResolver(ctx, wit)
+
+	var witData WorkItemsData
+	err = json.NewDecoder(witJSON.Body).Decode(&witData)
+	if err != nil {
+		return nil, errors.Wrap(err, fmt.Sprintf("unable to parse JSON: %v", err))
+	}
+
+	resolver, err := NewWorkItemsResolver(ctx, witData.Data)
 	if err != nil {
 		return nil, errors.Wrap(err, "cannot create WorkItemsResolver fro filter")
 	}

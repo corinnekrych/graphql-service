@@ -2,16 +2,16 @@ package resolver
 
 import (
 	"context"
-	"github.com/corinnekrych/graphql-service/witapi/model"
+	"github.com/corinnekrych/graphql-service/witapi/client"
 	"github.com/graph-gophers/graphql-go"
 )
 
 // The WorkItemResolver is the entry point to retrieve work items.
 type WorkItemResolver struct {
-	wit model.WorkItem
+	wit client.WorkItem
 }
 
-func NewWorkItemsResolver(ctx context.Context, wits []model.WorkItem) (*[]*WorkItemResolver, error) {
+func NewWorkItemsResolver(ctx context.Context, wits []client.WorkItem) (*[]*WorkItemResolver, error) {
 	var resolvers = make([]*WorkItemResolver, 0, len(wits))
 	for _, wit := range wits {
 		resolvers = append(resolvers, &WorkItemResolver{wit: wit})
@@ -20,17 +20,30 @@ func NewWorkItemsResolver(ctx context.Context, wits []model.WorkItem) (*[]*WorkI
 	return &resolvers, nil
 }
 
-// ID resolves the film's unique identifier.
 func (r WorkItemResolver) ID() graphql.ID {
-	return graphql.ID(r.wit.Id)
+	return graphql.ID(r.wit.ID.String())
 }
 
-// Description of a work item tracker
+// Description is a work item tracker's description.
 func (r WorkItemResolver) Description() string {
-	return r.wit.WorkItemAttributes.Description
+	d := r.wit.Attributes["system.description"]
+	if d == nil {
+		return ""
+	}
+	if description, ok := d.(string); ok {
+		return description
+	}
+	return ""
 }
 
-// Name of a work item tracker
+// Name is a work item tracker's title.
 func (r WorkItemResolver) Name() string {
-	return r.wit.WorkItemAttributes.Title
+	t := r.wit.Attributes["system.title"]
+	if t == nil {
+		return ""
+	}
+	if title, ok := t.(string); ok {
+		return title
+	}
+	return ""
 }

@@ -1,7 +1,7 @@
 M = $(shell printf "\033[34;1m▶\033[0m")
 
 build: dep ; $(info $(M) Building project...)
-	go build
+	go build ./...
 
 clean: ; $(info $(M) [TODO] Removing generated files... )
 	$(RM) schema/bindata.go
@@ -19,4 +19,4 @@ setup: ; $(info $(M) Fetching github.com/golang/dep...)
 server: schema ; $(info $(M) Starting development server...)
 	go run main.go
 
-.PHONY: build clean container dep image schema setup server
+.PHONY: dep schema build clean container image setup server

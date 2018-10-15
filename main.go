@@ -5,7 +5,8 @@ import (
 	"github.com/corinnekrych/graphql-service/handler"
 	"github.com/corinnekrych/graphql-service/resolver"
 	"github.com/corinnekrych/graphql-service/schema"
-	"github.com/corinnekrych/graphql-service/witapi"
+	"github.com/corinnekrych/graphql-service/witapi/client"
+	goaclient "github.com/goadesign/goa/client"
 	graphql "github.com/graph-gophers/graphql-go"
 	"log"
 	"net/http"
@@ -22,7 +23,10 @@ func main() {
 		idleTimeout       = 90 * time.Second
 		maxHeaderBytes    = http.DefaultMaxHeaderBytes
 	)
-	witClient := witapi.NewClient(http.DefaultClient, "https://openshift.io/api")
+
+	// Create client struct
+	witClient := client.New(goaclient.HTTPClientDoer(http.DefaultClient))
+	witClient.Host = "openshift.io"
 
 	root, err := resolver.NewRoot(witClient)
 	if err != nil {
