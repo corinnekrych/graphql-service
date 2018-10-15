@@ -32,12 +32,11 @@ make server
 * to test with `curl`:
 
 ```
-curl -XPOST -d '{"query": "{ workItems {name} }"}' localhost:8000/graphql
-curl -XPOST -d '{"query": "{ filter(spaceId: \"e8864cfe-f65a-4351-85a4-3a585d801b45\") {name} }"}' localhost:8000/graphql
+curl -XPOST -d '{"query": "{ workItems(spaceId: \"e8864cfe-f65a-4351-85a4-3a585d801b45\") {name} }"}' localhost:8000/graphql
 ```
 * or use GraphiQL, go to http://localhost:8000/ and enter in editor:
 ```
 {
-  	filter(spaceId: "e8864cfe-f65a-4351-85a4-3a585d801b45") {name}
+  	workItems(spaceId: "e8864cfe-f65a-4351-85a4-3a585d801b45") {name}
 }
 ```

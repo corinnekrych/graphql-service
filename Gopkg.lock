@@ -3,6 +3,42 @@
 
 [[projects]]
   branch = "master"
+  digest = "1:ef5b0622d834c139454148b8fd0c92bb314828900532b267ae62da9fec109866"
+  name = "github.com/armon/go-metrics"
+  packages = ["."]
+  pruneopts = "UT"
+  revision = "f0300d1749da6fa982027e449ec0c7a145510c3c"
+
+[[projects]]
+  digest = "1:ffe9824d294da03b391f44e1ae8281281b4afc1bdaa9588c9097785e3af10cec"
+  name = "github.com/davecgh/go-spew"
+  packages = ["spew"]
+  pruneopts = "UT"
+  revision = "8991bc29aa16c548c550c7ff78260e27b9ab7c73"
+  version = "v1.1.1"
+
+[[projects]]
+  digest = "1:8d983343581370768675191a8695f52d663f50a9234c571128f3d146314892cf"
+  name = "github.com/dimfeld/httptreemux"
+  packages = ["."]
+  pruneopts = "UT"
+  revision = "7f532489e7739b3d49df5c602bf63549881fe753"
+  version = "v5.0.1"
+
+[[projects]]
+  digest = "1:0e6a07d43e760104f43bc2c7b63116a3fa74b25c4281bcb84d2cd984cb69ad5c"
+  name = "github.com/goadesign/goa"
+  packages = [
+    ".",
+    "client",
+    "uuid",
+  ]
+  pruneopts = "UT"
+  revision = "5646a430cdeb66983d5ace3384e0a667c185abc7"
+  version = "v1.3.0"
+
+[[projects]]
+  branch = "master"
   digest = "1:7e177faef601df529fb7c710d1090182829393d9ad94a8a6c6a8eb35120177ff"
   name = "github.com/graph-gophers/graphql-go"
   packages = [
@@ -22,6 +58,22 @@
   ]
   pruneopts = "UT"
   revision = "a2b6fc39dd10d826594c712173fb9cf1e0e446e8"
+
+[[projects]]
+  digest = "1:2be5a35f0c5b35162c41bb24971e5dcf6ce825403296ee435429cdcc4e1e847e"
+  name = "github.com/hashicorp/go-immutable-radix"
+  packages = ["."]
+  pruneopts = "UT"
+  revision = "27df80928bb34bb1b0d6d0e01b9e679902e7a6b5"
+  version = "v1.0.0"
+
+[[projects]]
+  digest = "1:67474f760e9ac3799f740db2c489e6423a4cde45520673ec123ac831ad849cb8"
+  name = "github.com/hashicorp/golang-lru"
+  packages = ["simplelru"]
+  pruneopts = "UT"
+  revision = "20f1fb78b0740ba8c3cb143a61e86ba5c8669768"
+  version = "v0.5.0"
 
 [[projects]]
   digest = "1:450b7623b185031f3a456801155c8320209f75d0d4c4e633c6b1e59d44d6e392"
@@ -44,10 +96,21 @@
   version = "v0.8.0"
 
 [[projects]]
+  digest = "1:274f67cb6fed9588ea2521ecdac05a6d62a8c51c074c1fccc6a49a40ba80e925"
+  name = "github.com/satori/go.uuid"
+  packages = ["."]
+  pruneopts = "UT"
+  revision = "f58768cc1a7a7e77a3bd49e98cdd21419399b6a3"
+  version = "v1.2.0"
+
+[[projects]]
   branch = "master"
-  digest = "1:76ee51c3f468493aff39dbacc401e8831fbb765104cbf613b89bef01cf4bad70"
+  digest = "1:290b8002a96a5f5c1bd8316884f6e2414f5fb1e46a22bbd5a1ff0d45dc944cb3"
   name = "golang.org/x/net"
-  packages = ["context"]
+  packages = [
+    "context",
+    "websocket",
+  ]
   pruneopts = "UT"
   revision = "49bb7cea24b1df9410e1712aa6433dae904ff66a"
 
@@ -55,9 +118,15 @@
   analyzer-name = "dep"
   analyzer-version = 1
   input-imports = [
+    "github.com/davecgh/go-spew/spew",
+    "github.com/goadesign/goa",
+    "github.com/goadesign/goa/client",
+    "github.com/goadesign/goa/uuid",
     "github.com/graph-gophers/graphql-go",
     "github.com/graph-gophers/graphql-go/errors",
     "github.com/pkg/errors",
+    "github.com/satori/go.uuid",
+    "golang.org/x/net/websocket",
   ]
   solver-name = "gps-cdcl"
   solver-version = 1
