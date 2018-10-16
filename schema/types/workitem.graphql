@@ -2,7 +2,16 @@
 type WorkItem {
   # A unique identifier.
   id: ID!
-  # Name
+  # Title is the system.title of the a work item tracker.
+  title: String!
+  # Name is the system.title of the a work item tracker.
   name: String!
+  # Description system.description of the a work item tracker.
   description: String!
+  # State is an enum of state: New, Open, Closed, Done
+  state: String!
+  # Type of the work item: workitems, iterations
+  type: String!
+  # Comments associated to a given work item tracker.
+  comments: [Comment]
 }
