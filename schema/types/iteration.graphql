@@ -1,0 +1,13 @@
+# An Iteration for a given space.
+type Iteration {
+    # A unique identifier.
+    id: ID!
+    # Name is the name of the iteration.
+    name: String!
+    # Description is the description f the iteration.
+    description: String!
+    # State is an enum of state: New, Open, Closed, Done
+    state: String!
+    # List all workitems associated with this iteration.
+    workItems: [WorkItem]
+}

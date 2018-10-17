@@ -1,5 +1,7 @@
 # The Query type represents all of the entry points into the API.
 type Query {
+  # List all workitems for a given spaceId.
   workItems(spaceId: String!): [WorkItem]
-  iterations(spaceId: String!): [WorkItem]
+  # List all iteration for a given spaceId.
+  iterations(spaceId: String!): [Iteration]
 }
