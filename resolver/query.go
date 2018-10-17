@@ -17,6 +17,7 @@ type QueryResolver struct {
 	client *client.Client
 }
 
+// NewRoot create a new root query resolver.
 func NewRoot(client *client.Client) (*QueryResolver, error) {
 	if client == nil {
 		return nil, errors.New("cannot resolve witapi.Client")
@@ -25,10 +26,12 @@ func NewRoot(client *client.Client) (*QueryResolver, error) {
 	return &QueryResolver{client: client}, nil
 }
 
+// FilterQueryArgs si the arguments to fetch work items.
 type FilterQueryArgs struct {
 	SpaceId string
 }
 
+// WorkItems fetches all the work items associated with a spaceId.
 func (r QueryResolver) WorkItems(ctx context.Context, args FilterQueryArgs) (*[]*WorkItemResolver, error) {
 	// TODO use DataLoader
 	path := fmt.Sprintf("/api/spaces/%s/workitems", args.SpaceId)
@@ -50,6 +53,7 @@ func (r QueryResolver) WorkItems(ctx context.Context, args FilterQueryArgs) (*[]
 	return resolver, nil
 }
 
+// Iterations fetches all the iterations associated with a spaceId.
 func (r QueryResolver) Iterations(ctx context.Context, args FilterQueryArgs) (*[]*WorkItemResolver, error) {
 	// TODO use DataLoader
 	path := fmt.Sprintf("/api/spaces/%s/iterations", args.SpaceId)

@@ -15,6 +15,7 @@ type WorkItemResolver struct {
 	client *client.Client
 }
 
+// NewWorkItemResolver creates a work item resolver.
 func NewWorkItemResolver(ctx context.Context, wits []client.WorkItem, client *client.Client) (*[]*WorkItemResolver, error) {
 	var resolvers = make([]*WorkItemResolver, 0, len(wits))
 	for _, wit := range wits {
@@ -24,6 +25,7 @@ func NewWorkItemResolver(ctx context.Context, wits []client.WorkItem, client *cl
 	return &resolvers, nil
 }
 
+// ID is the unique id of a work item tracker.
 func (r WorkItemResolver) ID() graphql.ID {
 	return graphql.ID(r.wit.ID.String())
 }
@@ -81,10 +83,12 @@ func (r WorkItemResolver) Type() string {
 	return r.wit.Type
 }
 
+// CommentData is the root data Json type return REST call.
 type CommentData struct {
 	Data []client.Comment `json:"data"`
 }
 
+// Comments is the list od comments associated to a work item tracker.
 func (r WorkItemResolver) Comments(ctx context.Context) (*[]*CommentResolver, error) {
 	path := fmt.Sprintf("/api/workitems/%s/comments", r.wit.ID.String())
 	witJSON, err := r.client.ListWorkItemComments(ctx, path, nil, nil, nil, nil)
