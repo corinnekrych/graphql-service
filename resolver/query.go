@@ -31,7 +31,6 @@ type FilterQueryArgs struct {
 
 func (r QueryResolver) WorkItems(ctx context.Context, args FilterQueryArgs) (*[]*WorkItemResolver, error) {
 	// TODO use DataLoader
-	//wit, err := r.client.WorkItems(ctx, &args.SpaceId)
 	path := fmt.Sprintf("/api/spaces/%s/workitems", args.SpaceId)
 	witJSON, err := r.client.ListWorkitems(ctx, path, nil, nil, nil, nil, nil, nil, nil, nil, nil, nil, nil, nil, nil)
 	if err != nil {
@@ -44,9 +43,30 @@ func (r QueryResolver) WorkItems(ctx context.Context, args FilterQueryArgs) (*[]
 		return nil, errors.Wrap(err, fmt.Sprintf("unable to parse JSON: %v", err))
 	}
 
-	resolver, err := NewWorkItemsResolver(ctx, witData.Data)
+	resolver, err := NewWorkItemResolver(ctx, witData.Data, r.client)
 	if err != nil {
-		return nil, errors.Wrap(err, "cannot create WorkItemsResolver fro filter")
+		return nil, errors.Wrap(err, "cannot create WorkItemsResolver from filter")
+	}
+	return resolver, nil
+}
+
+func (r QueryResolver) Iterations(ctx context.Context, args FilterQueryArgs) (*[]*WorkItemResolver, error) {
+	// TODO use DataLoader
+	path := fmt.Sprintf("/api/spaces/%s/iterations", args.SpaceId)
+	witJSON, err := r.client.ListWorkitems(ctx, path, nil, nil, nil, nil, nil, nil, nil, nil, nil, nil, nil, nil, nil)
+	if err != nil {
+		return nil, errors.Wrap(err, "cannot resolve workItems for QueryResolver")
+	}
+
+	var witData WorkItemsData
+	err = json.NewDecoder(witJSON.Body).Decode(&witData)
+	if err != nil {
+		return nil, errors.Wrap(err, fmt.Sprintf("unable to parse JSON: %v", err))
+	}
+
+	resolver, err := NewWorkItemResolver(ctx, witData.Data, r.client)
+	if err != nil {
+		return nil, errors.Wrap(err, "cannot create WorkItemsResolver from filter")
 	}
 	return resolver, nil
 }
