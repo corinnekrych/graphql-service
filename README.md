@@ -37,19 +37,6 @@ curl -XPOST -d '{"query": "{ workItems(spaceId: \"e8864cfe-f65a-4351-85a4-3a585d
 * or use GraphiQL, go to http://localhost:8000/ and enter in editor:
 ```
 {
-  iterations(spaceId: "63327beb-b3ac-45a1-9a55-eda02a566a74") {
-    id
-    name
-    workItems {
-      id
-      title
-      state
-      comments {
-        text: body
-      }
-    }
-  }
-
   workItems(spaceId: "63327beb-b3ac-45a1-9a55-eda02a566a74") {
     id
     title
@@ -60,3 +47,5 @@ curl -XPOST -d '{"query": "{ workItems(spaceId: \"e8864cfe-f65a-4351-85a4-3a585d
   }
 }
 ```
+
+To see more queries please see [doc folder](doc/USAGE.md).
