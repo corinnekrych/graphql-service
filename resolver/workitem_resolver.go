@@ -130,14 +130,29 @@ func (r WorkItemResolver) Assignees(ctx context.Context) (*[]*UserResolver, erro
 	users := []client.User{}
 
 	// Load User with DataLoader
+	//ldr := ctx.Value(loader.UserLoaderKey).(*dataloader.Loader)
+	//keys := dataloader.NewKeysFromStrings(userIds)
+	//for _, key := range keys {
+	//	thunk := ldr.Load(ctx, key)
+	//	data, err := thunk()
+	//	if err != nil {
+	//		return nil, err
+	//	}
+	//	if user, ok := data.(client.User); ok {
+	//		users = append(users, user)
+	//	}
+	//}
+	// end of Load User with DataLoader
+
+	// Load User with DataLoader with Batch
 	ldr := ctx.Value(loader.UserLoaderKey).(*dataloader.Loader)
 	keys := dataloader.NewKeysFromStrings(userIds)
-	for _, key := range keys {
-		thunk := ldr.Load(ctx, key)
-		data, err := thunk()
-		if err != nil {
-			return nil, err
-		}
+	thunks := ldr.LoadMany(ctx, keys)
+	datas, errs := thunks()
+	if errs != nil {
+		return nil, errors.New(fmt.Sprintf("%s", errs))
+	}
+	for _, data := range datas {
 		if user, ok := data.(client.User); ok {
 			users = append(users, user)
 		}
