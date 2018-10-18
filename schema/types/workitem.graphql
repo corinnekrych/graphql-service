@@ -12,6 +12,8 @@ type WorkItem {
   state: String!
   # Type of the work item: workitems, iterations
   type: String!
-  # Comments associated to a given work item tracker.
+  # Comments is the list of associated to a given work item tracker.
   comments: [Comment]
+  # Assignees is the list of assignees to a given work item tracker.
+  assignees: [User]
 }

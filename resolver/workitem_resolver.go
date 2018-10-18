@@ -88,14 +88,14 @@ type CommentData struct {
 	Data []client.Comment `json:"data"`
 }
 
-// Comments is the list od comments associated to a work item tracker.
+// Comments is the list of comments associated to a work item tracker.
 func (r WorkItemResolver) Comments(ctx context.Context) (*[]*CommentResolver, error) {
 	path := fmt.Sprintf("/api/workitems/%s/comments", r.wit.ID.String())
 	witJSON, err := r.client.ListWorkItemComments(ctx, path, nil, nil, nil, nil)
 	if err != nil {
 		return nil, errors.Wrap(err, "cannot resolve Comments for CommentResolver")
 	}
-
+	defer witJSON.Body.Close()
 	var commentData CommentData
 	err = json.NewDecoder(witJSON.Body).Decode(&commentData)
 	if err != nil {
@@ -103,6 +103,44 @@ func (r WorkItemResolver) Comments(ctx context.Context) (*[]*CommentResolver, er
 	}
 
 	resolver, err := NewCommentResolver(ctx, commentData.Data)
+	if err != nil {
+		return nil, errors.Wrap(err, "cannot create CommentResolver from filter")
+	}
+	return resolver, nil
+}
+
+// Assignees is the list of assignee associated to a work item tracker.
+func (r WorkItemResolver) Assignees(ctx context.Context) (*[]*UserResolver, error) {
+
+	if r.wit.Relationships == nil {
+		return nil, nil
+	}
+	if r.wit.Relationships.Assignees == nil {
+		return nil, nil
+	}
+	userIds := []string{}
+	for _, v := range r.wit.Relationships.Assignees.Data {
+		if v.ID == nil {
+			continue
+		}
+		userIds = append(userIds, *v.ID)
+	}
+	users := []client.User{}
+	for _, id := range userIds {
+		path := fmt.Sprintf("/api/users/%s", id)
+		fmt.Println("::RESOLVING UserID %v", id)
+		userJSON, err := r.client.ShowUsers(ctx, path)
+		if err != nil {
+			return nil, errors.Wrap(err, "cannot resolve ShowUsers for UserResolver")
+		}
+		defer userJSON.Body.Close()
+		user, err := r.client.DecodeUser(userJSON)
+		if err != nil {
+			return nil, errors.Wrap(err, "cannot decode Users for UserResolver")
+		}
+		users = append(users, *user)
+	}
+	resolver, err := NewUserResolver(ctx, users)
 	if err != nil {
 		return nil, errors.Wrap(err, "cannot create CommentResolver from filter")
 	}

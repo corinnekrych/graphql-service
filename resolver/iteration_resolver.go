@@ -16,6 +16,7 @@ type IterationResolver struct {
 	client    *client.Client
 }
 
+// NewIterationResolver creates an iteration resolver.
 func NewIterationResolver(ctx context.Context, spaceId string, its []client.Iteration, client *client.Client) (*[]*IterationResolver, error) {
 	var resolvers = make([]*IterationResolver, 0, len(its))
 	for _, it := range its {
@@ -66,17 +67,21 @@ func (r IterationResolver) State() string {
 	return *b
 }
 
+// WorkItems gets the list of work item trackers associated to an iteration.
 func (r IterationResolver) WorkItems(ctx context.Context) (*[]*WorkItemResolver, error) {
-	path := fmt.Sprintf("/api/spaces/%s/workitems", r.iteration.ID)
 	if r.iteration.ID == nil {
 		return nil, nil
 	}
-	value := r.iteration.ID.String()
-	itJSON, err := r.client.ListWorkitems(ctx, path, nil, nil, nil, nil, &value, nil, nil, nil, nil, nil, nil, nil, nil)
+
+	value := fmt.Sprintf("{\"$AND\":[{\"iteration\":{\"$EQ\":\"%s\"}}]}", r.iteration.ID.String())
+	itJSON, err := r.client.ListWorkitems(ctx, "/api/search", nil, nil, nil, &value, nil, nil, nil, nil, nil, nil, nil, nil, nil)
 	if err != nil {
 		return nil, errors.Wrap(err, "cannot resolve WorkItems for IterationResolver")
 	}
+	defer itJSON.Body.Close()
 
+	//dd, _ := ioutil.ReadAll(itJSON.Body)
+	//fmt.Println(string(dd))
 	var witData WorkItemsData
 	err = json.NewDecoder(itJSON.Body).Decode(&witData)
 	if err != nil {

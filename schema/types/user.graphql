@@ -1,0 +1,7 @@
+# A User
+type User {
+    # A unique identifier.
+    id: ID!
+    # Name is the name of the user.
+    name: String!
+}
