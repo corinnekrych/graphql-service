@@ -4,7 +4,9 @@ import (
 	"context"
 	"encoding/json"
 	"fmt"
+	"github.com/corinnekrych/graphql-service/loader"
 	"github.com/corinnekrych/graphql-service/witapi/client"
+	"github.com/graph-gophers/dataloader"
 	"github.com/graph-gophers/graphql-go"
 	"github.com/pkg/errors"
 )
@@ -126,20 +128,38 @@ func (r WorkItemResolver) Assignees(ctx context.Context) (*[]*UserResolver, erro
 		userIds = append(userIds, *v.ID)
 	}
 	users := []client.User{}
-	for _, id := range userIds {
-		path := fmt.Sprintf("/api/users/%s", id)
-		fmt.Println("::RESOLVING UserID %v", id)
-		userJSON, err := r.client.ShowUsers(ctx, path)
+
+	// Load User with DataLoader
+	ldr := ctx.Value(loader.UserLoaderKey).(*dataloader.Loader)
+	keys := dataloader.NewKeysFromStrings(userIds)
+	for _, key := range keys {
+		thunk := ldr.Load(ctx, key)
+		data, err := thunk()
 		if err != nil {
-			return nil, errors.Wrap(err, "cannot resolve ShowUsers for UserResolver")
+			return nil, err
 		}
-		defer userJSON.Body.Close()
-		user, err := r.client.DecodeUser(userJSON)
-		if err != nil {
-			return nil, errors.Wrap(err, "cannot decode Users for UserResolver")
+		if user, ok := data.(client.User); ok {
+			users = append(users, user)
 		}
-		users = append(users, *user)
 	}
+	// end of Load User with DataLoader
+
+	// Load User without DataLoader
+	//for _, id := range userIds {
+	//	path := fmt.Sprintf("/api/users/%s", id)
+	//	fmt.Println("::RESOLVING UserID %v", id)
+	//	userJSON, err := r.client.ShowUsers(ctx, path)
+	//	if err != nil {
+	//		return nil, errors.Wrap(err, "cannot resolve ShowUsers for UserResolver")
+	//	}
+	//	defer userJSON.Body.Close()
+	//	user, err := r.client.DecodeUser(userJSON)
+	//	if err != nil {
+	//		return nil, errors.Wrap(err, "cannot decode Users for UserResolver")
+	//	}
+	//	users = append(users, *user)
+	//}
+	// end of Load User without DataLoader
 	resolver, err := NewUserResolver(ctx, users)
 	if err != nil {
 		return nil, errors.Wrap(err, "cannot create CommentResolver from filter")

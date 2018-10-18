@@ -3,11 +3,13 @@ package main
 //
 import (
 	"github.com/corinnekrych/graphql-service/handler"
+	"github.com/corinnekrych/graphql-service/loader"
 	"github.com/corinnekrych/graphql-service/resolver"
 	"github.com/corinnekrych/graphql-service/schema"
 	"github.com/corinnekrych/graphql-service/witapi/client"
 	goaclient "github.com/goadesign/goa/client"
 	graphql "github.com/graph-gophers/graphql-go"
+
 	"log"
 	"net/http"
 	"os"
@@ -43,7 +45,8 @@ func main() {
 	// Create the request handler; inject dependencies.
 	h := handler.GraphQL{
 		// Parse and validate schema. Panic if unable to do so.
-		Schema: sch,
+		Schema:  sch,
+		Loaders: loader.Initialize(witClient),
 	}
 	// Register handlers to routes.
 	mux := http.NewServeMux()

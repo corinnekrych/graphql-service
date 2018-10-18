@@ -39,6 +39,14 @@
 
 [[projects]]
   branch = "master"
+  digest = "1:4320bead1f0645673e8ae9f2febefda4592fc0be12c4d93880001683ed6d116b"
+  name = "github.com/graph-gophers/dataloader"
+  packages = ["."]
+  pruneopts = "UT"
+  revision = "65f631c656238d8ecc7e656b8fd1fffeabd2cf89"
+
+[[projects]]
+  branch = "master"
   digest = "1:a3d1e57e77a1fc2313a5e83f34b843e322e59007ec5e8c92e670e5505b71379f"
   name = "github.com/graph-gophers/graphql-go"
   packages = [
@@ -122,6 +130,7 @@
     "github.com/goadesign/goa",
     "github.com/goadesign/goa/client",
     "github.com/goadesign/goa/uuid",
+    "github.com/graph-gophers/dataloader",
     "github.com/graph-gophers/graphql-go",
     "github.com/graph-gophers/graphql-go/errors",
     "github.com/pkg/errors",
