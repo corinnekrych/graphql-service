@@ -2,6 +2,8 @@
 type Query {
   # List all workitems for a given spaceId.
   workItems(spaceId: String!): [WorkItem]
+  # WorkItemsSummary gives a short overview of the list of
+  workItemsSummary(spaceId: String!): WorkItemsSummary
   # List all iteration for a given spaceId.
   iterations(spaceId: String!): [Iteration]
 }

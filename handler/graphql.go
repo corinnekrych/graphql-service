@@ -2,18 +2,17 @@ package handler
 
 import (
 	"encoding/json"
+	"github.com/corinnekrych/graphql-service/loader"
+	"github.com/graph-gophers/graphql-go"
 	"net/http"
 	"sync"
-
-	"github.com/graph-gophers/graphql-go"
 )
 
 // The GraphQL handler handles GraphQL API requests over HTTP.
-// TODO It should handle batched requests as sent by the apollo-client.
 type GraphQL struct {
-	Schema *graphql.Schema
-	//Loaders loader.Collection TODO use DataLoader to batch fetchting of data
-	Logger logger
+	Schema  *graphql.Schema
+	Loaders loader.BatchFnCollection
+	Logger  logger
 }
 
 func (h GraphQL) ServeHTTP(w http.ResponseWriter, r *http.Request) {
@@ -48,9 +47,9 @@ func (h GraphQL) ServeHTTP(w http.ResponseWriter, r *http.Request) {
 
 	// Here, begin request execution...
 	var (
-		ctx       = r.Context()                  //h.Loaders.Attach(r.Context()) // TODO Attach dataloaders onto the request context.
-		responses = make([]*graphql.Response, n) // Allocate a slice large enough for all responses.
-		wg        sync.WaitGroup                 // Use the WaitGroup to wait for all executions to finish.
+		ctx       = h.Loaders.Attach(r.Context()) // TODO Attach dataloaders onto the request context.
+		responses = make([]*graphql.Response, n)  // Allocate a slice large enough for all responses.
+		wg        sync.WaitGroup                  // Use the WaitGroup to wait for all executions to finish.
 	)
 
 	wg.Add(n)

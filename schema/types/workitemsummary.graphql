@@ -1,0 +1,9 @@
+# A Summary of a work item list
+type WorkItemsSummary {
+    # Total number of work items in the list.
+    totalCount: Int!
+    # ResolvedCount gives the number of resolved work items trackers.
+    resolvedCount: Int!
+    # OpnedCount gives the number of in progress work items trackers.
+    inProgressCount: Int!
+}

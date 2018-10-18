@@ -1,7 +1,7 @@
-# A work item tracker
+# A commnet in a work item tracker
 type Comment {
     # A unique identifier.
     id: ID!
-    # Body is the system.title of the a work item tracker.
+    # Body is the content of the comment.
     body: String!
 }
