@@ -5,7 +5,7 @@ build: vendor/ schema ; $(info $(M) Building project...)
 	go build ./...
 
 .PHONY: clean
-clean: ; $(info $(M) [TODO] Removing generated files... )
+clean: ; $(info $(M) Removing generated files... )
 	$(RM) schema/bindata.go
 	$(RM) -rf vendor/
 
