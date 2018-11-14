@@ -1,22 +1,25 @@
 M = $(shell printf "\033[34;1m▶\033[0m")
 
-build: dep ; $(info $(M) Building project...)
+.PHONY: build
+build: vendor/ schema ; $(info $(M) Building project...)
 	go build ./...
 
-clean: ; $(info $(M) [TODO] Removing generated files... )
+.PHONY: clean
+clean: ; $(info $(M) Removing generated files... )
 	$(RM) schema/bindata.go
+	$(RM) -rf vendor/
 
-dep: setup ; $(info $(M) Ensuring vendored dependencies are up-to-date...)
-	dep ensure
+.PHONY: schema
+schema: schema/bindata.go ; $(info $(M) Embedding schema files into binary...)
 
-schema: dep ; $(info $(M) Embedding schema files into binary...)
+schema/bindata.go: vendor/ ./schema/*.graphql ./schema/types/*.graphql
 	PATH=$(GOPATH)/bin:$(PATH) go generate ./schema
 
-setup: ; $(info $(M) Fetching github.com/golang/dep...)
+vendor/: Gopkg.toml Gopkg.lock ; $(info $(M) Fetching dependencies...)
 	go get github.com/golang/dep/cmd/dep
 	go get -u github.com/jteeuwen/go-bindata/...
+	dep ensure
 
+.PHONY: server
 server: schema ; $(info $(M) Starting development server...)
 	go run main.go
-
-.PHONY: dep schema build clean container image setup server

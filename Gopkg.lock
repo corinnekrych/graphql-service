@@ -26,7 +26,7 @@
   version = "v5.0.1"
 
 [[projects]]
-  digest = "1:0e6a07d43e760104f43bc2c7b63116a3fa74b25c4281bcb84d2cd984cb69ad5c"
+  digest = "1:c4457d3d55683a5d92ddb931967bf89c2654a16efd54484286f437017a336fb1"
   name = "github.com/goadesign/goa"
   packages = [
     ".",
@@ -47,7 +47,7 @@
 
 [[projects]]
   branch = "master"
-  digest = "1:a3d1e57e77a1fc2313a5e83f34b843e322e59007ec5e8c92e670e5505b71379f"
+  digest = "1:44226bc21fe648a56999a489e6177732545f89c277a34cf4e5980ff2d47fe632"
   name = "github.com/graph-gophers/graphql-go"
   packages = [
     ".",
@@ -84,7 +84,7 @@
   version = "v0.5.0"
 
 [[projects]]
-  digest = "1:450b7623b185031f3a456801155c8320209f75d0d4c4e633c6b1e59d44d6e392"
+  digest = "1:27af6024faa3c28426a698b8c653be0fd908bc96e25b7d76f2192eb342427db6"
   name = "github.com/opentracing/opentracing-go"
   packages = [
     ".",
@@ -113,7 +113,7 @@
 
 [[projects]]
   branch = "master"
-  digest = "1:290b8002a96a5f5c1bd8316884f6e2414f5fb1e46a22bbd5a1ff0d45dc944cb3"
+  digest = "1:9d77f120e50e5134d4256d87f77a14022c9b624433e8bd8f4ed72be800d5fb61"
   name = "golang.org/x/net"
   packages = [
     "context",

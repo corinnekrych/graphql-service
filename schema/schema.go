@@ -1,13 +1,11 @@
 //go:generate go-bindata -ignore=\.go -pkg=schema -o=bindata.go ./...
+
 package schema
 
 import "bytes"
 
-// String reads the .graphql schema files from the generated _bindata.go file, concatenating the
-// files together into one string.
-//
-// If this method complains about not finding functions AssetNames() or MustAsset(),
-// run `go generate` against this package to generate the functions.
+// String reads the .graphql schema files from the generated _bindata.go file,
+// concatenating the files together into one string.
 func String() string {
 	buf := bytes.Buffer{}
 	for _, name := range AssetNames() {
